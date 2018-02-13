@@ -1,0 +1,29 @@
+{
+  "name": "discord-bash",
+  "version": "1.0.0",
+  "description": " Outils de gestion de serveur et channel discord ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DGoms/discord-bash.git"
+  },
+  "keywords": [
+    "discord"
+  ],
+  "author": "Alexis Broustaut & David Gomes",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DGoms/discord-bash/issues"
+  },
+  "homepage": "https://github.com/DGoms/discord-bash#readme",
+  "bin": {
+    "discord-bash": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^2.14.1",
+    "inquirer": "^5.1.0"
+  }
+}
