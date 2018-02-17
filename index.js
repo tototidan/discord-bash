@@ -6,7 +6,25 @@ const client = new discord.Client();
 client.login('NDEyOTI1OTU1ODIxMTQyMDE2.DWSa9w.dpviWpXVk0p6aDH3qidUkcgC0MU');
 client.on("ready",() =>
 {
-	console.log("salut mec ")
+    console.log("salut mec ")
+     client.syncGuilds();
+     var ser = []
+    client.guilds.forEach(function(data)
+    {      
+        ser.push(data)      
+    });
+
+    ser.forEach(function(data)
+    {
+        data.channels.forEach(function(test){
+            console.log(test.name ,"  ", test.id)
+            test.
+            if(test.name == "general")
+            {
+                test.send("salut")
+            }
+        });
+    });
 })
 client.on("message",message =>{
 	if(message.content === "salut")
@@ -15,6 +33,9 @@ client.on("message",message =>{
 		message.reply('pong')
 	}
 })
+
+
+
 //Configuration des paramètres attendus
 program
     .version('1.0.0')
