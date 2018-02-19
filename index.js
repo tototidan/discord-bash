@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const program = require('commander');
+const program = require('commander')
 const myFunction = require("./testexport")
 const fs = require('fs')
 let token = ""
