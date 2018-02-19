@@ -8,6 +8,17 @@ let token = ""
 
 
 
+fs.readFile("properties.properties","utf8",(err ,data)=>
+{
+       if(err) throw err
+       let list = data.trim().split(":")
+       token = list[1].trim()
+       startTest()     
+    })
+
+    
+
+
 
 
 
@@ -19,12 +30,17 @@ program
     .option('-m --message [value]', 'set message')
     .option('-s --sendmessage', 'send message , need -m and -w like( -w \"servername chan1 chan2, servername2 chan1 chan2').parse(process.argv)
 
-if (program.sendmessage && program.message != null && program.with != null) {
-    myFunction.msgToManyChan(program.message, program.with,  "NDEyOTI1OTU1ODIxMTQyMDE2.DWSa9w.dpviWpXVk0p6aDH3qidUkcgC0MU")
-}
-else if(program.list)
+function startTest()
 {
-    console.log(program.list)
+    if (program.sendmessage && program.message != null && program.with != null) {
+
+            myFunction.msgToManyChan(program.message, program.with,  token)
+        
+    }
+    else if(program.list)
+    {
+        console.log(program.list)
+    }
 }
 
 

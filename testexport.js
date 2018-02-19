@@ -58,6 +58,7 @@ exports.msgToManyChan = function(msg, withCommand , token)
                     message: textPrompt,
                     name: "reponse"
                 }]).then((reponse) => {
+
                     if (reponse.reponse.toLowerCase().search("o") != -1) {
                         let compteur = 0
                         chanToSend.forEach(function(c, index, array) {
@@ -68,14 +69,16 @@ exports.msgToManyChan = function(msg, withCommand , token)
                                 }
                             })
                         })
-                    } else if (reponse.listOfId.toLowerCase().search("n") != -1) {
+                    } 
+                    else if (reponse.reponse.toLowerCase().search("n") != -1)
+                     {
                         endProcess()
-
-                    } else {
+                    } 
+                    else 
+                    {
                         endProcess()
-
                     }
-                })
+                }).catch((err)=>{console.log(err)})
             }
             askUser().then(() => {
 
