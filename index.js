@@ -3,23 +3,17 @@
 const program = require('commander');
 const myFunction = require("./testexport")
 const fs = require('fs')
-
 let token = ""
 
 
 
-fs.readFile("properties.properties","utf8",(err ,data)=>
+fs.readFile("properties.properties","utf8",(err ,data) =>
 {
        if(err) throw err
        let list = data.trim().split(":")
        token = list[1].trim()
-       startTest()     
+       startTestCommand()     
     })
-
-    
-
-
-
 
 
 program
@@ -30,16 +24,15 @@ program
     .option('-m --message [value]', 'set message')
     .option('-s --sendmessage', 'send message , need -m and -w like( -w \"servername chan1 chan2, servername2 chan1 chan2').parse(process.argv)
 
-function startTest()
+function startTestCommand()
 {
     if (program.sendmessage && program.message != null && program.with != null) {
 
-            myFunction.msgToManyChan(program.message, program.with,  token)
-        
+        myFunction.msgToManyChan(program.message, program.with,  token) 
     }
     else if(program.list)
     {
-        console.log(program.list)
+        myFunction.getList(program.message , token)
     }
 }
 

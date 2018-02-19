@@ -9,12 +9,15 @@ exports.msgToManyChan = function(msg, withCommand , token)
         client.on("ready", () => {
             let end = false
             client.syncGuilds();
+
             let splittedUserInput = withCommand.split(",")
             let chanToSend = []
             let error = []
+
             splittedUserInput.forEach(function(dataFromUser) {
                 let compteur = 0
                 let actualServ = dataFromUser.trim().split(" ")
+
                 client.guilds.forEach(function(data) {
 
                     if (deleteAccent(data.name) == deleteAccent(actualServ[0])) {
@@ -92,9 +95,7 @@ exports.msgToManyChan = function(msg, withCommand , token)
 
 
 
-            function deleteAccent(pString) {
-                return pString.replace(/[\u0300-\u036f]/g, "").toLowerCase();
-            }
+            
 
         })
 
@@ -120,3 +121,49 @@ exports.msgToManyChan = function(msg, withCommand , token)
         }
 } 
 
+
+exports.getList = function(server , token)
+{
+    client.login(token)
+    client.on("ready", ()=>
+    {
+        client.syncGuilds()
+        console.log(server)
+        if(server == undefined || server == true)
+        {
+            generateList(client.guilds)
+        }
+        else
+        {
+            client.guilds.forEach((bServer)=>
+            {
+                if(deleteAccent(bServer.name) == deleteAccent(server))
+                {
+                    generateList(bServer)
+                }
+            })
+        }
+
+
+        function generateList(listOfServer)
+        {
+            listOfServer.forEach((data)=>
+            {
+                console.log("Serveur : " + data.name)
+                data.channels.forEach((chan)=>
+                {
+                    if(chan.type == "text")
+                    {
+                        console.log("   Nom du channel : " ,chan.name)
+                    }
+                })
+            })
+            process.exit()
+        }
+    })
+}
+
+function deleteAccent(pString) {
+    console.log("deleteaccent", pString)
+    return pString.replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
