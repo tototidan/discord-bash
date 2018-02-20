@@ -2,16 +2,22 @@
 
 const program = require('commander')
 const myFunction = require("./testexport")
+const theFunction = require("./dg")
 const fs = require('fs')
+const discord = require('discord.js')
+const client = new discord.Client()
 let token = ""
-
-
 
 fs.readFile("properties.properties", "utf8", (err, data) => {
     if (err) throw err
     let list = data.trim().split(":")
     token = list[1].trim()
-    startTestCommand()
+
+    client.login(token);
+
+    client.on('ready', () => {
+        startTestCommand()
+    });
 })
 
 
@@ -22,6 +28,7 @@ program
     .option('-i, --input', 'Show hello world')
     .option('-m --message [value]', 'set message')
     .option('-s --sendmessage', 'send message , need -m and -w like( -w \"servername chan1 chan2, servername2 chan1 chan2')
+    .option('-p --prompt', 'show prompt to send message')
     .parse(process.argv)
 
 function startTestCommand() {
@@ -31,6 +38,9 @@ function startTestCommand() {
     }
     else if (program.list) {
         myFunction.getList(program.message, token)
+    }
+    else if(program.prompt){
+        theFunction.sendMessage(token)
     }
 }
 
