@@ -1,47 +1,59 @@
 #!/usr/bin/env node
-
 const program = require('commander')
 const myFunction = require("./testexport")
-const theFunction = require("./dg")
-const fs = require('fs')
-const discord = require('discord.js')
-const client = new discord.Client()
-let token = ""
-
-fs.readFile("properties.properties", "utf8", (err, data) => {
-    if (err) throw err
-    let list = data.trim().split(":")
-    token = list[1].trim()
-
-    client.login(token);
-
-    client.on('ready', () => {
-        startTestCommand()
-    });
-})
-
+const theFunction = require("./function")
 
 program
     .version('1.0.0')
     .option('-l --list [value]', "List all server and chan , optional parameter \"server\" to search only in this server case insensitive")
     .option('-w, --with <items>', 'Show hello world')
-    .option('-i, --input', 'Show hello world')
     .option('-m --message [value]', 'set message')
+    .option('--withfile [value] ', "attach file to the message")
     .option('-s --sendmessage', 'send message , need -m and -w like( -w \"servername chan1 chan2, servername2 chan1 chan2')
     .option('-p --prompt', 'show prompt to send message')
     .parse(process.argv)
 
-function startTestCommand() {
-    if (program.sendmessage && program.message != null && program.with != null) {
+startTestCommand();
 
-        myFunction.msgToManyChan(program.message, program.with, token)
+async function startTestCommand() {
+    if (program.sendmessage && program.message != null && program.with != null) {
+        if (await checkFileExist(program.withfile)) {
+            myFunction.msgToManyChan(program.message, program.with, token, process.cwd() + "\\" + program.withfile)
+        }
+        else {
+            myFunction.msgToManyChan(program.message, program.with, token, null)
+        }
     }
     else if (program.list) {
         myFunction.getList(program.message, token)
     }
-    else if(program.prompt){
-        theFunction.sendMessage(token)
+    else if (program.prompt) {
+        theFunction.sendMessage()
     }
+    else{
+        program.help();
+    }
+}
+
+async function checkFileExist(path)
+{
+    if(path == null)
+    {
+        return false
+    }
+    fs.stat(process.cwd() + "\\"+path, (err , result)=>
+    {
+        if(result)
+        {
+            return true
+        }
+        else
+        {
+            console.log("Le fichier n'existe pas ")
+            return false
+            process.exit()
+        }
+    })
 }
 
 
