@@ -7,32 +7,30 @@ let token = ""
 
 
 
-fs.readFile("properties.properties","utf8",(err ,data) =>
-{
-       if(err) throw err
-       let list = data.trim().split(":")
-       token = list[1].trim()
-       startTestCommand()     
-    })
+fs.readFile("properties.properties", "utf8", (err, data) => {
+    if (err) throw err
+    let list = data.trim().split(":")
+    token = list[1].trim()
+    startTestCommand()
+})
 
 
 program
     .version('1.0.0')
-    .option('-l --list [value]' , "List all server and chan , optional parameter \"server\" to search only in this server case insensitive")
+    .option('-l --list [value]', "List all server and chan , optional parameter \"server\" to search only in this server case insensitive")
     .option('-w, --with <items>', 'Show hello world')
     .option('-i, --input', 'Show hello world')
     .option('-m --message [value]', 'set message')
-    .option('-s --sendmessage', 'send message , need -m and -w like( -w \"servername chan1 chan2, servername2 chan1 chan2').parse(process.argv)
+    .option('-s --sendmessage', 'send message , need -m and -w like( -w \"servername chan1 chan2, servername2 chan1 chan2')
+    .parse(process.argv)
 
-function startTestCommand()
-{
+function startTestCommand() {
     if (program.sendmessage && program.message != null && program.with != null) {
 
-        myFunction.msgToManyChan(program.message, program.with,  token) 
+        myFunction.msgToManyChan(program.message, program.with, token)
     }
-    else if(program.list)
-    {
-        myFunction.getList(program.message , token)
+    else if (program.list) {
+        myFunction.getList(program.message, token)
     }
 }
 
