@@ -3,8 +3,10 @@ const discord = require('discord.js')
 const client = new discord.Client()
 const _ = require("lodash")
 const inquirer = require('inquirer')
-exports.msgToManyChan = function(msg, withCommand , token) 
+exports.msgToManyChan = function(msg, withCommand , token , path) 
 {
+        let file = createAttachementObject(path)
+
         client.login(token)
         client.on("ready", () => {
             client.syncGuilds()
@@ -83,12 +85,17 @@ exports.msgToManyChan = function(msg, withCommand , token)
 
                             chanToSend.forEach(function(c, index, array)
                                 {
-                                    c.send(msg).then(() => {
+                                    try
+                                    {
+                                    c.send(msg , file).then(() =>
+                                       {
                                         compteur++
                                         if (compteur === array.length) {
                                             endProcess()
                                         }
                                     })
+                                }
+                                catch(e){console.log("catch send : " + e) ; process.exit()}
                                 })
                         } 
                     else if (reponse.reponse.toLowerCase().search("n") != -1)
@@ -199,7 +206,6 @@ function checkServerExist(serverObject , serverName)
 {
     if(deleteAccent(serverObject) == deleteAccent(serverName))
     {
-        console.log("ok")
         return true
     }
     return false
@@ -210,3 +216,15 @@ function endProcess()
     {
         process.exit()
     }
+
+function createAttachementObject(path)
+{   
+    if (path != null || path != undefined)
+    {
+        return new discord.Attachment(path)
+    }
+    else
+    {
+        return null
+    }
+}
