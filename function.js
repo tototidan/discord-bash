@@ -5,10 +5,12 @@ const myClient = require('./MyClient').myClient;
 const inquirer = require('inquirer');
 const fs = require("fs")
 
-function sendMessage()
+function sendMessage(pathFile)
 {
 	myClient.onReady().then(async() =>
 	{
+		let file = await myClient.createAttachement(pathFile);
+
 		let channels = myClient.GetTextChannels();
 
 		let choices = [];
@@ -45,7 +47,7 @@ function sendMessage()
 		let promiseSend = [];
 		for (let chan of answer.selectedChannels)
 		{
-			promiseSend.push(chan.send(answer.message));
+			promiseSend.push(chan.send(answer.message, file));
 		}
 
 		Promise.all(promiseSend).then(() =>
@@ -61,7 +63,7 @@ function msgToManyChan(msg, withCommand, path)
 
 	myClient.onReady().then(async() =>
 		{
-			let file = createAttachementObject(path)
+			let file = await myClient.createAttachement(path);
 			let splittedUserInput = withCommand.split(",")
 			let chanToSend = []
 			let error = []
