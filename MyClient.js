@@ -3,17 +3,48 @@ const isNullOrUndefined = require('util').isNullOrUndefined;
 const discord = require('discord.js');
 const fs = require('fs')
 
+const pathProperties = "properties.properties"
+
 class MyClient {
 	constructor() {
 		this.client = new discord.Client();
 		this.token = "";
 
-		fs.readFile("properties.properties", "utf8", (err, data) => {
-			if (err) throw err
-			let list = data.trim().split(":")
-			this.token = list[1].trim()
+		this.getToken().then((token) => {
+			this.token = token;
 			this.client.login(this.token);
-		})
+		});
+	}
+
+	getToken(){
+		return new Promise((resolve, reject) => {
+			fs.readFile(pathProperties, "utf8", (err, data) => {
+				if (err)
+					reject(err);
+
+				let token = null;
+				let list = data.trim().split(":")
+				token = list[1].trim()
+
+				resolve(token);
+			})
+		});
+		
+	}
+
+	static setToken(token){
+		return new Promise((resolve, reject) => {
+			if(token.length != 59)
+				reject('Bad token');
+
+			let data = "token: " + token;
+			fs.writeFile(pathProperties, data, "utf8", (err) => {
+				if(err)
+					reject(err);
+
+				resolve();
+			})
+		});
 	}
 
 	onReady() {
@@ -56,5 +87,6 @@ class MyClient {
 	}
 }
 
+module.exports.MyClient = MyClient;
 module.exports.myClient = new MyClient();
 
