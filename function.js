@@ -50,13 +50,30 @@ function sendMessage(pathFile)
 		{
 			promiseSend.push(chan.send(answer.message, file));
 		}
-		promiseSend.push(log.sendLog("Sendmessage : " ,answer.message))
 
 		Promise.all(promiseSend).then(() =>
 		{
 			console.log('Messages sent !');
-			endProcess()
+
 		});
+
+		let loggedString = ""
+		if (file != null)
+		{
+			loggedString += "send message from sendMessage : " + answer.message + " with a file"
+		}
+		else
+		{
+			loggedString += "send message from sendMessage : " + answer.message
+		}
+		log.sendLog(loggedString).then(() =>
+			{
+				endProcess()
+			})
+			.catch((e) =>
+			{
+				endProcess()
+			})
 	});
 }
 
@@ -126,7 +143,7 @@ function msgToManyChan(msg, withCommand, path)
 				textPrompt += "Voulez vous envoyez le message sur channel tout de m�me ? O : Oui , N : Non"
 			}
 			let promiseSend = []
-			
+
 			let answer = await inquirer.prompt([
 				{
 					type: "input",
@@ -142,14 +159,7 @@ function msgToManyChan(msg, withCommand, path)
 						{
 							promiseSend.push(c.send(msg, file))
 						})
-						if(file != null)
-						{
-							promiseSend.push(log.sendLog("sendMessage : "+ msg +" with a file"))
-						}
-						else
-						{
-							promiseSend.push(log.sendLog("sendMessage : "+ msg))
-						}
+
 					}
 					else if (reponse.reponse.toLowerCase().search("n") != -1)
 					{
@@ -167,10 +177,28 @@ function msgToManyChan(msg, withCommand, path)
 			Promise.all(promiseSend).then(() =>
 			{
 				console.log('Messages sent !');
-				endProcess()
-			}).catch((e)=>
+			}).catch((e) =>
 			{
-				console.log("Erreur lors de l'envoi : ",e)
+				console.log("Erreur lors de l'envoi : ", e)
+			})
+			let loggedString = ""
+			if (file != null)
+			{
+				loggedString += "sendMessage from msgtomanychan : " + msg + "With a file"
+			}
+			else
+			{
+				loggedString += "sendMessage from msgtomanychan : " + msg
+			}
+
+			log.sendLog(loggedString).then(() =>
+			{
+
+				endProcess()
+			}).catch((e) =>
+			{
+				console.log("pas ok" + e)
+				endProcess()
 			})
 
 
@@ -230,7 +258,11 @@ function getList(server)
 					}
 				})
 			})
-			endProcess()
+			log.sendLog("Asked list ").then(() =>
+			{
+				endProcess()
+			})
+
 		}
 	})
 }

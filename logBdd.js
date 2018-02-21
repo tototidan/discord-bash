@@ -13,6 +13,7 @@ class bddCon
 			{
 				host: '52.24.252.99',
 				dialect: 'mysql',
+				logging: no,
 
 				pool:
 				{
