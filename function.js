@@ -4,6 +4,7 @@ const _ = require("lodash")
 const myClient = require('./MyClient').myClient;
 const inquirer = require('inquirer');
 const fs = require("fs")
+const log = require("./logBdd")
 
 function sendMessage(pathFile)
 {
@@ -49,6 +50,7 @@ function sendMessage(pathFile)
 		{
 			promiseSend.push(chan.send(answer.message, file));
 		}
+		promiseSend.push(log.sendLog("Sendmessage : " ,answer.message))
 
 		Promise.all(promiseSend).then(() =>
 		{
@@ -124,6 +126,7 @@ function msgToManyChan(msg, withCommand, path)
 				textPrompt += "Voulez vous envoyez le message sur channel tout de m�me ? O : Oui , N : Non"
 			}
 			let promiseSend = []
+			
 			let answer = await inquirer.prompt([
 				{
 					type: "input",
@@ -139,6 +142,14 @@ function msgToManyChan(msg, withCommand, path)
 						{
 							promiseSend.push(c.send(msg, file))
 						})
+						if(file != null)
+						{
+							promiseSend.push(log.sendLog("sendMessage : "+ msg +" with a file"))
+						}
+						else
+						{
+							promiseSend.push(log.sendLog("sendMessage : "+ msg))
+						}
 					}
 					else if (reponse.reponse.toLowerCase().search("n") != -1)
 					{
@@ -157,7 +168,10 @@ function msgToManyChan(msg, withCommand, path)
 			{
 				console.log('Messages sent !');
 				endProcess()
-			});
+			}).catch((e)=>
+			{
+				console.log("Erreur lors de l'envoi : ",e)
+			})
 
 
 		}

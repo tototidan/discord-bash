@@ -5,6 +5,7 @@ const theFunction = require("./function")
 const path = require("path")
 const fs = require("fs")
 
+
 program
 	.version('1.0.0')
 	.option('-l --list [value]', "List all server and chan , optional parameter \"server\" to search only in this server case insensitive")
@@ -31,44 +32,4 @@ async function startTestCommand() {
 	}
 }
 
-
-
-
-//Configuration des paramètres attendus
-
-
-//On parse les arguments
-//fonction synchrone
-// program.parse(process.argv);
-
-// if(program.world){
-// console.log("Hello world");
-// }
-// else if(program.input){
-// inquirer.prompt([
-// {
-// type: 'input',
-// message: 'Entrer votre nom d\'utilisateur',
-// name: 'username'
-// },{
-// type: 'password',
-// message: 'Entrer votre mot de passe',
-// name: 'password'
-// },{
-// type: 'checkbox',
-// message: 'Que voulez-vous sauvegarder ?',
-// name: 'folderToSave',
-// choices:[
-// 'Documents',
-// 'Bureau',
-// 'Musique'
-// ]
-// }
-// ]).then((answer)=> {
-// console.log(answer);
-// })
-// }
-// else{
-// program.help();
-// }
 
